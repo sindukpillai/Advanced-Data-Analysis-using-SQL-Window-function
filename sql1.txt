@@ -1,0 +1,34 @@
+1. Query to group the restaurants on the basis of the cuisines served from the restaurants table:
+SELECT cuisine, COUNT(*) AS restaurant_count 
+FROM restaurants 
+GROUP BY cuisine;
+
+2.Query to retrieve the total number of restaurants under each cuisine:
+SELECT cuisine, COUNT(*) AS restaurant_count 
+FROM restaurants 
+GROUP BY cuisine;
+
+3. Query to retrieve the restaurant_id and item_names of all the non-vegetarian dishes from the food_items table:
+SELECT restaurant_id, item_name 
+FROM food_items 
+WHERE item_type = 'dishes' AND is_vegetarian = 0;
+
+4.Query to find the number of orders placed on each Monday in the month of September:
+SELECT DAYNAME(order_date) AS day_of_week, COUNT(*) AS orders_placed 
+FROM orders 
+WHERE MONTH(order_date) = 9 AND DAY(order_date) IN (5, 12, 19, 26)
+GROUP BY DAYNAME(order_date);
+
+5. Query to find the number of orders placed during each week in the month of September:
+SELECT 
+    CASE
+        WHEN DAY(order_date) BETWEEN 1 AND 7 THEN 'Week 1'
+        WHEN DAY(order_date) BETWEEN 8 AND 14 THEN 'Week 2'
+        WHEN DAY(order_date) BETWEEN 15 AND 21 THEN 'Week 3'
+        WHEN DAY(order_date) BETWEEN 22 AND 28 THEN 'Week 4'
+        ELSE 'Week 5'
+    END AS week_number,
+    COUNT(*) AS orders_placed 
+FROM orders 
+WHERE MONTH(order_date) = 9 
+GROUP BY week_number;

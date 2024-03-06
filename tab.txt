@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS `customers`;
+
+CREATE TABLE `customers` (
+  `customer_id` int NOT NULL,
+  `first_name` text,
+  `last_name` text,
+  `phone_number` text,
+  `address` text,
+  PRIMARY KEY (`customer_id`)
+)

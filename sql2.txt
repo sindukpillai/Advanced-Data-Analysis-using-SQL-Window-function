@@ -1,0 +1,42 @@
+1. Query to rank restaurants based on the number of food items they offer using a window function:
+
+2.Using ranking functions to find the top 3 food items (based on the quantity ordered) for each restaurant:
+WITH RankedFoodItems AS (
+    SELECT 
+        restaurant_id,
+        item_name,
+        quantity_ordered,
+        RANK() OVER (PARTITION BY restaurant_id ORDER BY quantity_ordered DESC) AS item_rank
+    FROM orders
+)
+SELECT 
+    restaurant_id,
+    item_name,
+    quantity_ordered
+FROM RankedFoodItems
+WHERE item_rank <= 3;
+
+3.Classifying customers into different categories (like "low", "medium", and "high") based on the total amount they've spent on orders using the CASE statement:
+SELECT 
+    customer_id,
+    SUM(total_price) AS total_spent,
+    CASE 
+        WHEN SUM(total_price) <= 100 THEN 'low'
+        WHEN SUM(total_price) <= 500 THEN 'medium'
+        ELSE 'high'
+    END AS spending_category
+FROM orders
+GROUP BY customer_id;
+
+4. Classifying orders based on delivery time: "fast" if the delivery time is less than 30 minutes, "medium" if it's between 30 minutes and 1 hour, and "slow" if it's more than 1 hour. Then find the number of deliveries that come under “fast” category:
+SELECT 
+    order_id,
+    delivery_time,
+    CASE 
+        WHEN delivery_time < '00:30:00' THEN 'fast'
+        WHEN delivery_time <= '01:00:00' THEN 'medium'
+        ELSE 'slow'
+    END AS delivery_category
+FROM orders
+WHERE delivery_time IS NOT NULL AND delivery_time < '01:00:00' AND delivery_time >= '00:00:00';
+
